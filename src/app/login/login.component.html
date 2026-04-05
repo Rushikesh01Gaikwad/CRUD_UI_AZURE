@@ -1,0 +1,115 @@
+<div class="container-fluid login-container">
+  <div class="row justify-content-center align-items-center vh-100">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="row g-0">
+          <!-- LEFT SIDE DESIGN -->
+          <div
+            class="col-md-5 left-panel d-flex flex-column justify-content-center align-items-center text-white"
+          >
+            <h3 class="fw-bold">Welcome</h3>
+            <p class="text-center px-3">
+              Manage your account and access the dashboard.
+            </p>
+
+            <button class="btn btn-light mt-3" (click)="toggleMode()">
+              {{ isLoginMode ? "Create Account" : "Login" }}
+            </button>
+          </div>
+
+          <!-- RIGHT SIDE FORM -->
+          <div class="col-md-7 p-4">
+            <h3 class="text-center mb-4 fw-bold">
+              {{ isLoginMode ? "Login" : "Create Account" }}
+            </h3>
+
+            <!-- LOGIN FORM -->
+            <form *ngIf="isLoginMode" (ngSubmit)="login()">
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="user.Email"
+                  name="email"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  [(ngModel)]="user.Password"
+                  name="password"
+                  required
+                />
+              </div>
+
+              <button class="btn btn-primary w-100 mt-3">Login</button>
+
+              <p class="text-center mt-3">
+                Don't have account?
+                <a href="#" (click)="toggleMode()">Register</a>
+              </p>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form *ngIf="!isLoginMode" (ngSubmit)="register()">
+              <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="user.Name"
+                  name="name"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="user.Email"
+                  name="email"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Mobile</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="user.Mobile"
+                  name="mobile"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  [(ngModel)]="user.Password"
+                  name="password"
+                  required
+                />
+              </div>
+
+              <button class="btn btn-success w-100 mt-3">Create Account</button>
+
+              <p class="text-center mt-3">
+                Already have account?
+                <a href="#" (click)="toggleMode()">Login</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

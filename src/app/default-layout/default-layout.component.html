@@ -1,0 +1,46 @@
+<div class="wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h4>GCEK</h4>
+    </div>
+
+    <ul class="menu">
+      <li routerLink="home" routerLinkActive="active">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </li>
+
+      <li routerLink="teachers" routerLinkActive="active">
+        <i class="bi bi-person"></i> Teachers
+      </li>
+
+      <li routerLink="departments" routerLinkActive="active">
+        <i class="bi bi-building"></i> Departments
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Section -->
+  <div class="main-content">
+    <!-- Header -->
+    <header class="topbar">
+      <div class="left">
+        <h5>Govt. college of engineering, Karad</h5>
+      </div>
+
+      <div class="right">
+        <span class="user"> <i class="bi bi-person-circle"></i> Admin </span>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2026 MyAdmin Dashboard</p>
+    </footer>
+  </div>
+</div>

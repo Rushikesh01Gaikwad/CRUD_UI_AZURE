@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <!-- Statistic Cards -->
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow border-0 text-center p-3 bg-primary text-white">
+        <i class="bi bi-person-video3 fs-1"></i>
+
+        <h5 class="mt-2">Total Teachers</h5>
+
+        <h2>{{ totalTeachers }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow border-0 text-center p-3 bg-success text-white">
+        <i class="bi bi-building fs-1"></i>
+
+        <h5 class="mt-2">Total Departments</h5>
+
+        <h2>{{ totalDepartments }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow border-0 text-center p-3 bg-warning text-dark">
+        <i class="bi bi-mortarboard fs-1"></i>
+
+        <h5 class="mt-2">Total Students</h5>
+
+        <h2>{{ totalStudents }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card shadow p-3">
+        <h5>Teachers per Department</h5>
+
+        <div style="height: 200px; width: 100%">
+          <canvas id="teacherChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow p-3">
+        <h5>Students Distribution</h5>
+
+        <div style="height: 200px; width: 100%">
+          <canvas id="studentChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
