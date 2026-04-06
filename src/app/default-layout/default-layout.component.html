@@ -28,13 +28,36 @@
         <h5>Govt. college of engineering, Karad</h5>
       </div>
 
-      <div class="right">
-        <span class="user"> <i class="bi bi-person-circle"></i> Admin </span>
+      <div class="right d-flex gap-3">
+        <button
+          class="btn btn-outline-primary btn-sm user"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Profile"
+        >
+          <i class="bi bi-person-circle"></i>
+        </button>
+        <button
+          class="btn btn-outline-primary btn-sm user"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Logout"
+          (click)="logout()"
+        >
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
       </div>
     </header>
 
     <!-- Page Content -->
     <main class="content">
+      <ngx-spinner
+        bdColor="rgba(0, 0, 0, 0.5)"
+        size="medium"
+        color="#fff"
+        type="ball-spin-clockwise"
+      >
+      </ngx-spinner>
       <router-outlet></router-outlet>
     </main>
 

@@ -6,6 +6,7 @@
       class="btn btn-primary"
       data-bs-toggle="modal"
       data-bs-target="#teacherModal"
+      (click)="addTeacher()"
     >
       Add Teacher
     </button>
@@ -23,26 +24,26 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let teacher of teachers; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ teacher.Name }}</td>
-        <td>{{ teacher.Remark }}</td>
+      <tr *ngFor="let teacher of teachers">
+        <td>{{ teacher.id}}</td>
+        <td>{{ teacher.name }}</td>
+        <td>{{ teacher.remark }}</td>
 
         <td>
           <span class="badge bg-info">
-            {{ teacher.Department?.Name }}
+            {{ teacher.department?.name }}
           </span>
         </td>
 
         <td>
           <button
             class="btn btn-sm btn-warning me-2"
-            (click)="editTeacher(teacher, i)"
+            (click)="editTeacher(teacher, teacher.id)"
           >
             <i class="bi bi-pencil-square"></i>
           </button>
 
-          <button class="btn btn-sm btn-danger" (click)="deleteTeacher(i)">
+          <button class="btn btn-sm btn-danger" (click)="deleteTeacher(teacher.id)">
             <i class="bi bi-trash"></i>
           </button>
         </td>
@@ -57,7 +58,17 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Add Teacher</h5>
+        <h5 class="modal-title"> 
+          @if(teacher.id)
+          {
+            Update
+          }
+          @else
+          {
+            Add
+          }
+          Teacher
+        </h5>
 
         <button class="btn-close" data-bs-dismiss="modal"></button>
       </div>
@@ -66,7 +77,7 @@
         <div class="mb-3">
           <label class="form-label">Teacher Name</label>
 
-          <input type="text" class="form-control" [(ngModel)]="teacher.Name" />
+          <input type="text" class="form-control" [(ngModel)]="teacher.name" />
         </div>
 
         <div class="mb-3">
@@ -75,18 +86,18 @@
           <input
             type="text"
             class="form-control"
-            [(ngModel)]="teacher.Remark"
+            [(ngModel)]="teacher.remark"
           />
         </div>
 
         <div class="mb-3">
           <label class="form-label">Department</label>
 
-          <select class="form-select" [(ngModel)]="teacher.DepartmentId">
+          <select class="form-select" [(ngModel)]="teacher.departmentID">
             <option value="">Select Department</option>
 
-            <option *ngFor="let dept of departments" [value]="dept.Id">
-              {{ dept.Name }}
+            <option *ngFor="let dept of departments" [value]="dept.id">
+              {{ dept.name }}
             </option>
           </select>
         </div>
@@ -102,7 +113,14 @@
           (click)="saveTeacher()"
           data-bs-dismiss="modal"
         >
+        @if(teacher.id)
+        {
+          Update
+        }
+        @else 
+        {
           Save
+        }
         </button>
       </div>
     </div>

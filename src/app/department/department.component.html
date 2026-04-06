@@ -6,6 +6,7 @@
       class="btn btn-primary"
       data-bs-toggle="modal"
       data-bs-target="#departmentModal"
+      (click)="addDepartment()"
     >
       Add Department
     </button>
@@ -22,20 +23,20 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let dept of departments; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ dept.Name }}</td>
-        <td>{{ dept.Remark }}</td>
+      <tr *ngFor="let dept of departments">
+        <td>{{ dept.id }}</td>
+        <td>{{ dept.name }}</td>
+        <td>{{ dept.remark }}</td>
 
         <td>
           <button
             class="btn btn-sm btn-warning me-2"
-            (click)="editDepartment(dept, i)"
+            (click)="editDepartment(dept, dept.id)"
           >
             <i class="bi bi-pencil-square"></i>
           </button>
 
-          <button class="btn btn-sm btn-danger" (click)="deleteDepartment(i)">
+          <button class="btn btn-sm btn-danger" (click)="deleteDepartment(dept.id)">
             <i class="bi bi-trash"></i>
           </button>
         </td>
@@ -47,10 +48,10 @@
 <!-- Modal -->
 
 <div class="modal fade" id="departmentModal">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Add Department</h5>
+        <h5 class="modal-title">@if(department.id) { Update } @else { Add } Department</h5>
         <button
           type="button"
           class="btn-close"
@@ -65,7 +66,7 @@
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="department.Name"
+              [(ngModel)]="department.name"
             />
           </div>
 
@@ -74,7 +75,7 @@
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="department.Remark"
+              [(ngModel)]="department.remark"
             />
           </div>
         </div>
@@ -90,7 +91,14 @@
           (click)="saveDepartment()"
           data-bs-dismiss="modal"
         >
+        @if(department.id) 
+        {
+          Update 
+        }
+        @else 
+        {
           Save
+        }
         </button>
       </div>
     </div>
