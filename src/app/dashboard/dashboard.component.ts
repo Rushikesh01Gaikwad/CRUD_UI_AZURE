@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Chart } from 'chart.js/auto';
+import { ApiService } from '../services/api.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AlertService } from '../services/alert.service';
 
 
 @Component({
@@ -10,12 +13,49 @@ import { Chart } from 'chart.js/auto';
 })
 export class DashboardComponent {
 
-  totalTeachers = 25;
-  totalDepartments = 10;
+  private readonly api = inject(ApiService);
+  private spinner = inject(NgxSpinnerService);
+  private alert = inject(AlertService);
+
+  totalTeachers = 0;
+  totalDepartments = 0;
   totalStudents = 350;
 
   ngAfterViewInit() {
+    this.loadData();
     this.loadCharts();
+  }
+
+
+  loadData() {
+    this.spinner.show();
+    this.api.get('department/Get').subscribe({
+      next: (res) => {
+        if (res.status == 1) {
+          this.totalDepartments = res.data.length;
+        }
+        this.spinner.hide();
+
+      },
+      error: (err) => {
+        console.error('Error fetching departments', err);
+        this.spinner.hide();
+      },
+    });
+
+    this.api.get('teacher/Get').subscribe({
+      next: (res) => {
+        if (res.status == 1) {
+          this.totalTeachers = res.data.length;
+        }
+        this.spinner.hide();
+
+      },
+      error: (err) => {
+        console.error('Error fetching teachers', err);
+        this.spinner.hide();
+      },
+    });
   }
 
   loadCharts() {
