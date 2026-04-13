@@ -6,4 +6,5 @@ export class Teacher {
     remark?: string = '';
     departmentID?: number;
     department?: Department;
+    profileImage?: string; // 🔥 store file name / URL
 }

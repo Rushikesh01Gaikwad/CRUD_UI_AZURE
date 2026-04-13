@@ -70,7 +70,7 @@ export class TeacherComponent implements OnInit {
     });
   }
 
-  saveTeacher() {
+  save() {
     if (this.teacher.id) {
       this.spinner.show();
       this.api.put('teacher/Update', this.teacher.id, this.teacher).subscribe({
@@ -111,6 +111,12 @@ export class TeacherComponent implements OnInit {
     const modal = new bootstrap.Modal(document.getElementById('teacherModal'));
     modal.show();
     this.teacher = Object.assign({}, t);
+    if (this.teacher.profileImage) {
+      this.imagePreview =
+        'https://your-api-url/uploads/' + this.teacher.profileImage;
+    } else {
+      this.imagePreview = null;
+    }
   }
 
   deleteTeacher(id: number) {
@@ -139,5 +145,37 @@ export class TeacherComponent implements OnInit {
 
   addTeacher() {
     this.teacher = new Teacher();
+  }
+
+  imagePreview: string | ArrayBuffer | null = null;
+  selectedFile!: File;
+  onFileSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+
+      // 👇 Preview logic
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  uploadImage() {
+    if (!this.selectedFile) {
+      this.alert.error('Please upload photographs!');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    this.api.post('upload/Image', formData).subscribe((res: any) => {
+      if (res.status_cd == 1) {
+        this.teacher.profileImage = res.fileName;
+        this.save();
+      } else {
+        this.alert.error('Error while upload profile photos!');
+      }
+    });
   }
 }
