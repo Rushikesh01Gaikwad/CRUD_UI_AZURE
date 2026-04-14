@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Teacher } from '../Models/Teacher.model';
 import { Department } from '../Models/Department.model';
 import { CommonModule } from '@angular/common';
@@ -27,6 +33,7 @@ export class TeacherComponent implements OnInit {
   teachers: Teacher[] = [];
   departments: Department[] = [];
   teacher: Teacher = new Teacher();
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   loadDepartments(): void {
     this.spinner.show();
@@ -78,7 +85,14 @@ export class TeacherComponent implements OnInit {
           if (res.status == 1) {
             this.spinner.hide();
             this.loadTeachers();
+            // 👇 CLOSE MODAL
+            const modalElement = document.getElementById('teacherModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal?.hide();
             this.alert.success('Teacher updated successfully');
+          } else {
+            this.spinner.hide();
+            this.alert.error('Error while update');
           }
         },
         error: (err) => {
@@ -93,6 +107,13 @@ export class TeacherComponent implements OnInit {
           if (res.status == 1) {
             this.loadTeachers();
             this.spinner.hide();
+            // 👇 CLOSE MODAL
+            const modalElement = document.getElementById('teacherModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal?.hide();
+            if (this.fileInput) {
+              this.fileInput.nativeElement.value = '';
+            }
             this.alert.success('Teacher added successfully');
           } else {
             console.error('Error inserting teacher', res);
@@ -111,9 +132,14 @@ export class TeacherComponent implements OnInit {
     const modal = new bootstrap.Modal(document.getElementById('teacherModal'));
     modal.show();
     this.teacher = Object.assign({}, t);
+    this.selectedFile = null!;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+
     if (this.teacher.profileImage) {
       this.imagePreview =
-        'https://your-api-url/uploads/' + this.teacher.profileImage;
+        this.api['uploadUrl'] + 'teachers/' + this.teacher.profileImage;
     } else {
       this.imagePreview = null;
     }
@@ -145,6 +171,11 @@ export class TeacherComponent implements OnInit {
 
   addTeacher() {
     this.teacher = new Teacher();
+    this.imagePreview = null;
+    this.selectedFile = null!;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 
   imagePreview: string | ArrayBuffer | null = null;
@@ -163,19 +194,44 @@ export class TeacherComponent implements OnInit {
   }
 
   uploadImage() {
-    if (!this.selectedFile) {
+    if (!this.imagePreview) {
       this.alert.error('Please upload photographs!');
       return;
     }
+
+    if (!this.selectedFile) {
+      this.save();
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    this.api.post('upload/Image', formData).subscribe((res: any) => {
-      if (res.status_cd == 1) {
-        this.teacher.profileImage = res.fileName;
-        this.save();
-      } else {
-        this.alert.error('Error while upload profile photos!');
-      }
-    });
+    if (!this.teacher.profileImage) {
+      this.api
+        .UploadImg('upload/UploadTeacherPhoto', formData)
+        .subscribe((res: any) => {
+          if (res.status == 1) {
+            this.teacher.profileImage = res.data.fileName;
+            this.save();
+          } else {
+            this.alert.error('Error while upload profile photos!');
+          }
+        });
+    } else {
+      formData.append('oldFileName', this.teacher.profileImage);
+      console.log('formData...', formData);
+
+      this.api.UploadImg('upload/UpdateTeacherPhoto', formData).subscribe(
+        (res: any) => {
+          if (res.status == 1) {
+            this.teacher.profileImage = res.data.fileName;
+            this.save();
+          }
+        },
+        (error) => {
+          this.alert.error('Something went wrong...');
+        },
+      );
+    }
   }
 }

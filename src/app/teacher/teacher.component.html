@@ -97,6 +97,8 @@
             type="file"
             class="form-control"
             (change)="onFileSelected($event)"
+              #fileInput
+
           />
 
           <div class="text-center mt-2" *ngIf="imagePreview">
@@ -130,7 +132,6 @@
         <button
           class="btn btn-primary"
           (click)="uploadImage()"
-          data-bs-dismiss="modal"
         >
           @if (teacher.id) {
             Update

@@ -37,8 +37,8 @@ studentChart: any;
       const departments = res.departments.data;
       const teachers = res.teachers.data;
 
-      this.totalDepartments = departments.length;
-      this.totalTeachers = teachers.length;
+      this.totalDepartments = departments?.length || 0;
+      this.totalTeachers = teachers?.length || 0;
 
       this.tryBuildChart(departments, teachers);
       this.spinner.hide();

@@ -8,6 +8,7 @@ import { environment } from '../environment/environment';
 export class ApiService {
 
   private baseUrl = environment.apiUrl;
+  private uploadUrl = environment.uploadUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -34,5 +35,10 @@ export class ApiService {
   // DELETE
   delete(endpoint: string, id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}${endpoint}/${id}`);
+  }
+
+  // Upload
+  UploadImg(endpoint: string, data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}${endpoint}`, data);
   }
 }
