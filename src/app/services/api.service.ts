@@ -8,7 +8,6 @@ import { environment } from '../environment/environment';
 export class ApiService {
 
   private baseUrl = environment.apiUrl;
-  private uploadUrl = environment.uploadUrl;
 
   constructor(private http: HttpClient) { }
 

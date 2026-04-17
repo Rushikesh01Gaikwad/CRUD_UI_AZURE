@@ -139,7 +139,9 @@ export class TeacherComponent implements OnInit {
 
     if (this.teacher.profileImage) {
       this.imagePreview =
-        this.api['uploadUrl'] + 'teachers/' + this.teacher.profileImage;
+        // this.api['uploadUrl'] + 'teachers/' + this.teacher.profileImage;
+          this.imagePreview = this.teacher.profileImage; // ✅ direct URL
+
     } else {
       this.imagePreview = null;
     }
@@ -211,7 +213,7 @@ export class TeacherComponent implements OnInit {
         .UploadImg('upload/UploadTeacherPhoto', formData)
         .subscribe((res: any) => {
           if (res.status == 1) {
-            this.teacher.profileImage = res.data.fileName;
+            this.teacher.profileImage = res.data.filePath;
             this.save();
           } else {
             this.alert.error('Error while upload profile photos!');
@@ -224,7 +226,7 @@ export class TeacherComponent implements OnInit {
       this.api.UploadImg('upload/UpdateTeacherPhoto', formData).subscribe(
         (res: any) => {
           if (res.status == 1) {
-            this.teacher.profileImage = res.data.fileName;
+            this.teacher.profileImage = res.data.filePath;
             this.save();
           }
         },
