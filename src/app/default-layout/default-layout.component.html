@@ -61,6 +61,38 @@
       <router-outlet></router-outlet>
     </main>
 
+    <!-- Floating Chat Button -->
+    <button class="chat-toggle" (click)="toggleChat()">
+      <i class="bi bi-chat-dots"></i>
+    </button>
+
+    <!-- Chat Popup -->
+    <div class="chat-popup" *ngIf="isChatOpen" [class.open]="isChatOpen">
+      <div class="chat-header">
+        <span>AI Assistant</span>
+        <button (click)="toggleChat()" class="btn btn-light btn-sm">      <i class="bi bi-x-square"></i>
+</button>
+      </div>
+
+      <div class="chat-body">
+        <div
+          *ngFor="let msg of messages"
+          [ngClass]="msg.role === 'user' ? 'user-msg' : 'bot-msg'"
+        >
+          {{ msg.text }}
+        </div>
+      </div>
+
+      <div class="chat-footer">
+        <input
+          [(ngModel)]="question"
+          (keyup.enter)="send()"
+          placeholder="Ask something..."
+        />
+        <button (click)="send()">➤</button>
+      </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
       <p>© 2026 MyAdmin Dashboard</p>
